@@ -19,6 +19,20 @@ is_metal: true
 debug: false
 verbose: true
 
+searchlight_git_repo: https://git.openstack.org/openstack/searchlight
+searchlight_git_install_branch: master
+searchlight_requirements_git_repo: https://git.openstack.org/openstack/requirements
+searchlight_requirements_git_install_branch: master
+searchlight_developer_mode: false
+searchlight_developer_constraints:
+  - "git+{{ searchlight_git_repo }}@{{ searchlight_git_install_branch }}#egg=searchlight"
+
+# Name of the virtual env to deploy into
+searchlight_venv_tag: untagged
+searchlight_bin: "/openstack/venvs/searchlight-{{ searchlight_venv_tag }}/bin"
+
+searchlight_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/searchlight.tgz
+
 #: # System configuration options
 #: System user name
 searchlight_system_user_name: searchlight
@@ -80,6 +94,13 @@ searchlight_apt_packages:
   - build-essential
   - python-dev
 
+# searchlight packages that must be installed before anything else
+searchlight_requires_pip_packages:
+  - virtualenv
+  - virtualenv-tools
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+  - httplib2
+
 searchlight_pip_packages:
   - searchlight
   - greenlet
@@ -106,10 +127,6 @@ searchlight_pip_packages:
   - python-designateclient
   - python-glanceclient
   - python-novaclient
-
-searchlight_git_url: "https://git.openstack.org/openstack/searchlight"
-searchlight_git_install_branch: 95a25fab78cc6fe9ae764c29372d6df8620337a2  # head of "master" as of 30.10.2015
-searchlight_git_dest: "/opt/searchlight_{{ searchlight_git_install_branch | replace('/', '_') }}"
 
 #: Address to bind the server.  Useful when selecting a particular
 #: network interface. (string value)
