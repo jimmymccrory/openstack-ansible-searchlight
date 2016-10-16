@@ -43,6 +43,8 @@
       destination: "{{ searchlight_etc_directory }}/property-protections-roles.conf"
       config_overrides: "{{ searchlight_property_protections_roles_overrides }}"
       config_type: "ini"
+  notify:
+    - Restart searchlight services
   tags:
     - searchlight-config-files
     - searchlight-configuration
