@@ -48,9 +48,9 @@
 
 - name: Test for Searchlight log directory or link
   shell: |
-    if [ -h "{{ searchlight_log_directory }}" ]; then
-      chown -h {{ searchlight_system_user_name }}:{{ searchlight_system_group_name }} {{ searchlight_log_directory }}
-      chown -R {{ searchlight_system_user_name }}:{{ searchlight_system_group_name }} "$(readlink {{ searchlight_log_directory }})"
+    if [ -h "/var/log/searchlight" ]; then
+      chown -h {{ searchlight_system_user_name }}:{{ searchlight_system_group_name }} /var/log/searchlight
+      chown -R {{ searchlight_system_user_name }}:{{ searchlight_system_group_name }} "$(readlink /var/log/searchlight)"
     else
       exit 1
     fi
@@ -63,7 +63,7 @@
 
 - name: Create Searchlight log directory
   file:
-    path: "{{ searchlight_log_directory }}"
+    path: "/var/log/searchlight"
     state: "directory"
     owner: "{{ searchlight_system_user_name }}"
     group: "{{ searchlight_system_group_name }}"

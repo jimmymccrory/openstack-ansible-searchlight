@@ -44,8 +44,6 @@ searchlight_system_shell: /bin/false
 searchlight_system_comment: searchlight system user
 #: System user home directory
 searchlight_system_user_home: "/var/lib/{{ searchlight_system_user_name }}"
-#: Searchlight log directory
-searchlight_log_directory: /var/lib/searchlight
 #: Searchlight etc directory
 searchlight_etc_directory: /etc/searchlight
 #: Searchlight API program name
