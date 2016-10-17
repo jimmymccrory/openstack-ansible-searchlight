@@ -1,11 +1,11 @@
 ---
-# Copyright 2015, Ian Cordasco
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,21 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Reload systemd daemon
-  command: "systemctl daemon-reload"
-  notify:
-    - Restart searchlight services
+- include: searchlight_init_upstart.yml
+  when: pid1_name == "init"
 
-- name: Reload upstart init scripts
-  shell: |
-    initctl reload-configuration
-  notify:
-    - Restart searchlight services
+- include: searchlight_init_systemd.yml
+  when: pid1_name == "systemd"
 
-- name: Restart searchlight services
+- name: Load service
   service:
-    name: "{{ item.value.service_name }}"
-    state: "restarted"
-    pattern: "{{ item.value.service_name }}"
+   name: "{{ item.value.service_name }}"
+   enabled: "yes"
   with_dict: "{{ searchlight_services }}"
   when: inventory_hostname in groups[item.value.group]
+  notify:
+    - Restart searchlight services

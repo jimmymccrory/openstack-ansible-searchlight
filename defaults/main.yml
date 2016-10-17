@@ -46,10 +46,6 @@ searchlight_system_comment: searchlight system user
 searchlight_system_user_home: "/var/lib/{{ searchlight_system_user_name }}"
 #: Searchlight etc directory
 searchlight_etc_directory: /etc/searchlight
-#: Searchlight API program name
-searchlight_api_program_name: searchlight-api
-#: Searchlight Listener program name
-searchlight_listener_program_name: searchlight-listener
 #: Searchlight service name
 searchlight_service_name: searchlight
 #: Searchlight service user name
@@ -82,9 +78,13 @@ searchlight_service_adminuri_protocol: http
 searchlight_service_adminurl: "{{ searchlight_service_adminuri_protocol }}://{{ internal_lb_vip_address }}:{{ searchlight_bind_port }}"
 
 #: List of programs/services owned by searchlight
-searchlight_service_names:
-  - "{{ searchlight_api_program_name }}"
-  - "{{ searchlight_listener_program_name }}"
+searchlight_services:
+  searchlight-api:
+    group: searchlight_api
+    service_name: searchlight-api
+  searchlight-listener:
+    group: searchlight_listener
+    service_name: searchlight_listener
 
 #: # Necessary packages
 searchlight_apt_packages:

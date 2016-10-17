@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,31 +16,11 @@
 - name: Place the init script
   template:
     src: "searchlight-upstart-init.j2"
-    dest: "/etc/init/{{ program_name }}.conf"
+    dest: "/etc/init/{{ item.value.service_name }}.conf"
     mode: "0644"
     owner: "root"
     group: "root"
+  with_dict: "{{ searchlight_services }}"
+  when: inventory_hostname in groups[item.value.group]
   notify:
-    - Restart searchlight services
-  tags:
-    - upstart-init
-    - searchlight-init
-
-- name: Reload init scripts
-  shell: |
-    initctl reload-configuration
-  notify:
-    - Restart searchlight services
-  tags:
-    - upstart-init
-    - searchlight-init
-
-- name: Load service
-  service:
-   name: "{{ program_name }}"
-   enabled: "yes"
-  notify:
-    - Restart searchlight services
-  tags:
-    - upstart-init
-    - searchlight-init
+    - Reload upstart init scripts

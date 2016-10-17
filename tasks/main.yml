@@ -13,13 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Check init system
+  command: cat /proc/1/comm
+  register: _pid1_name
+  tags:
+    - always
+
+- name: Set the name of pid1
+  set_fact:
+    pid1_name: "{{ _pid1_name.stdout }}"
+  tags:
+    - always
+
 - include: searchlight_pre_install.yml
 
 - include: searchlight_install.yml
 
 - include: searchlight_post_install.yml
 
-- include: searchlight_upstart_init.yml
+- include: searchlight_init_common.yml
 
 - include: searchlight_service_setup.yml
   when:
