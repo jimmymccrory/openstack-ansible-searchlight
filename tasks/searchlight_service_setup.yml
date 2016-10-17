@@ -16,12 +16,14 @@
 - name: Ensure the searchlight service exists
   keystone:
     command: "ensure_service"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     service_name: "{{ searchlight_service_name }}"
     service_type: "{{ searchlight_service_type }}"
     description: "{{ searchlight_service_description }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_searchlight_service
   until: add_searchlight_service|success
   retries: 5
@@ -34,12 +36,14 @@
 - name: Ensure the searchlight user exists
   keystone:
     command: "ensure_user"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     user_name: "{{ searchlight_service_user_name }}"
     tenant_name: "{{ searchlight_service_project_name }}"
     password: "{{ searchlight_service_password |default('changeme') }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_searchlight_user
   until: add_searchlight_user|success
   retries: 5
@@ -53,8 +57,10 @@
 - name: Ensure the searchlight user has the admin role
   keystone:
     command: "ensure_user_role"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     user_name: "{{ searchlight_service_user_name }}"
     tenant_name: "{{ searchlight_service_project_name }}"
     role_name: "{{ item }}"
@@ -72,12 +78,14 @@
 - name: Ensure the searchlight endpoint is registered
   keystone:
     command: "ensure_endpoint"
-    token: "{{ keystone_auth_admin_token }}"
     endpoint: "{{ keystone_service_adminurl }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     region_name: "{{ searchlight_service_region }}"
     service_name: "{{ searchlight_service_name }}"
     service_type: "{{ searchlight_service_type }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
     endpoint_list:
       - url: "{{ searchlight_service_publicurl }}"
         interface: "public"
@@ -94,4 +102,3 @@
     - searchlight-service-add
     - searchlight-endpoints-add
     - searchlight-setup
-
