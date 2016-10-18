@@ -1,0 +1,41 @@
+---
+# Copyright 2016, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+component_skel:
+  searchlight_api:
+    belongs_to:
+      - searchlight_all
+  searchlight_listener:
+    belongs_to:
+      - searchlight_all
+
+container_skel:
+  searchlight_container:
+    belongs_to:
+      - search_containers
+      - os-infra_containers
+    contains:
+      - searchlight_api
+      - searchlight_listener
+    properties:
+      service_name: searchlight
+
+physical_skel:
+  search_containers:
+    belongs_to:
+    - all_containers
+  search_hosts:
+    belongs_to:
+    - hosts

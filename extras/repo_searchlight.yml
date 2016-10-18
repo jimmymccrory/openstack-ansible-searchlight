@@ -1,0 +1,5 @@
+
+## Designate service
+searchlight_git_repo: https://git.openstack.org/openstack/searchlight
+searchlight_git_install_branch: master
+searchlight_git_dest: "/opt/searchlight_{{ searchlight_git_install_branch | replace('/', '_') }}"
